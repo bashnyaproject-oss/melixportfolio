@@ -464,3 +464,31 @@ ul, ol { padding: 0; list-style: none; }
 .slider-ctrl-apps { margin: 16px 0 56px; }
 .slider-ctrl button:disabled { opacity: .3; cursor: default; }
 .slider-ctrl button:disabled:hover { background: transparent; }
+
+/* ---------- hover: which cards open a comic case ---------- */
+.card-media-wrap { position: relative; }
+.card-badge {
+  position: absolute; left: 14px; bottom: 14px; z-index: 2;
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 7px 12px; border-radius: 999px; font-size: 13px; font-weight: 600;
+  background: rgba(10,10,12,.78); color: #fff; border: 1px solid rgba(255,255,255,.18);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  opacity: 0; transform: translateY(6px); transition: opacity .25s, transform .25s;
+  pointer-events: none;
+}
+.card-badge.is-comic { background: #3D6BFF; border-color: #6d8fff; }
+.card-badge.is-comic::before {
+  content: ""; width: 14px; height: 14px; flex: none;
+  background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2 4h7a3 3 0 0 1 3 3v13a2 2 0 0 0-2-2H2z'/%3E%3Cpath d='M22 4h-7a3 3 0 0 0-3 3v13a2 2 0 0 1 2-2h8z'/%3E%3C/svg%3E") center/contain no-repeat;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2 4h7a3 3 0 0 1 3 3v13a2 2 0 0 0-2-2H2z'/%3E%3Cpath d='M22 4h-7a3 3 0 0 0-3 3v13a2 2 0 0 1 2-2h8z'/%3E%3C/svg%3E") center/contain no-repeat;
+}
+.card:hover .card-badge, .card:focus-visible .card-badge { opacity: 1; transform: none; }
+.card.has-comic:hover, .card.has-comic:focus-visible {
+  border-color: #3D6BFF; box-shadow: 0 0 0 1px #3D6BFF, 0 18px 50px -12px rgba(61,107,255,.45);
+}
+.card.has-comic { transition: border-color .25s ease, box-shadow .3s ease; }
+.card:not(.has-comic):hover .card-media video, .card:not(.has-comic):hover .card-media img { filter: brightness(.85); }
+/* touch screens have no hover: keep the comic badge visible */
+@media (hover: none) { .card-badge.is-comic { opacity: 1; transform: none; } }
+.card-feature .card-media-wrap { height: 100%; }
