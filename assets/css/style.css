@@ -162,7 +162,7 @@ ul, ol { padding: 0; list-style: none; }
 
 /* ---------- project cards ---------- */
 .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
-.grid-apps { grid-template-columns: repeat(3, 1fr); }
+.grid-apps { grid-template-columns: repeat(4, 1fr); }
 .grid-brand { grid-template-columns: repeat(4, 1fr); }
 .card {
   display: flex; flex-direction: column;
@@ -170,8 +170,14 @@ ul, ol { padding: 0; list-style: none; }
   overflow: hidden; transition: border-color .25s ease;
 }
 .card:hover { border-color: var(--line-strong); }
-.card-media { aspect-ratio: 16 / 10; background: var(--surface-2); overflow: hidden; }
-.card-app .card-media { aspect-ratio: 4 / 5; }
+.card-media { aspect-ratio: 16 / 10; background: var(--surface-2); overflow: hidden; position: relative; }
+.card-media::before { content: ""; position: absolute; inset: 0; background: linear-gradient(100deg, transparent 30%, rgba(255,255,255,.05) 50%, transparent 70%); background-size: 220% 100%; animation: shimmer 1.6s linear infinite; pointer-events: none; }
+.card-media.loaded::before { display: none; }
+.card-media video { position: relative; }
+@keyframes shimmer { from { background-position: 120% 0; } to { background-position: -120% 0; } }
+.card-app .card-media { aspect-ratio: 9 / 19; background: #000; }
+.card-app .card-media video { object-fit: contain; }
+.card-app:hover .card-media video { transform: none; }
 .card-brand .card-media { aspect-ratio: 1; }
 .card-media video, .card-media img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s cubic-bezier(.2,.7,.1,1); }
 .card:hover .card-media video, .card:hover .card-media img { transform: scale(1.03); }
@@ -182,7 +188,7 @@ ul, ol { padding: 0; list-style: none; }
 .tags { display: flex; flex-wrap: wrap; gap: 6px; }
 .tags li { font-size: 12px; color: var(--text-2); border: 1px solid var(--line-strong); border-radius: 999px; padding: 3px 10px; }
 
-.app-row { display: grid; grid-auto-flow: column; grid-auto-columns: min(300px, 72vw); gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding-bottom: 8px; margin-bottom: 56px; }
+.app-row { display: grid; grid-auto-flow: column; grid-auto-columns: min(280px, 64vw); gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding-bottom: 8px; margin-bottom: 56px; }
 .app-row::-webkit-scrollbar { display: none; }
 .app-row .card { scroll-snap-align: start; }
 
@@ -236,6 +242,8 @@ ul, ol { padding: 0; list-style: none; }
 .case-meta dt { font-size: 12px; color: var(--text-3); margin-bottom: 4px; }
 .case-meta dd { font-size: 15px; }
 .case-meta dd:empty::before { content: "—"; color: var(--text-3); }
+.case-frame-app { display: flex; justify-content: center; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: clamp(16px, 4vw, 56px); }
+.case-frame-app .case-video { width: auto; max-width: 100%; max-height: 82vh; border: 0; border-radius: 18px; background: #000; }
 .case-video { width: 100%; border-radius: var(--radius-lg); border: 1px solid var(--line); background: var(--surface); }
 .case-body { padding-top: 96px; display: grid; gap: 56px; }
 .case-block { display: grid; grid-template-columns: 240px 1fr; gap: 32px; }
@@ -292,7 +300,10 @@ ul, ol { padding: 0; list-style: none; }
   .intro { grid-template-columns: 1fr; padding-top: 64px; }
   .intro-photo { max-width: 280px; }
   .stats, .stats-3 { grid-template-columns: repeat(2, 1fr); }
-  .process, .grid, .grid-apps, .do-grid { grid-template-columns: 1fr; }
+  .process, .grid, .do-grid { grid-template-columns: 1fr; }
+  .grid-apps { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .card-app .card-body { padding: 16px; }
+  .card-app .card-body p { display: none; }
   .process li { min-height: 0; transform: none !important; }
   .process h3 { margin-top: 24px; }
   .co { grid-template-columns: 1fr 24px; }

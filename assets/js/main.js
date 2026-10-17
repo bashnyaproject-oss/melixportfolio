@@ -9,26 +9,32 @@
     if (href === path || (href === '/works' && path.indexOf('/projects/') === 0)) a.setAttribute('aria-current', 'page');
   });
 
-  // Card videos: load and play only while visible
+  // Card videos: first frame loads right away (preload=metadata), play only while visible
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var vids = document.querySelectorAll('video[data-src]');
+  var vids = document.querySelectorAll('.card-media video');
+  vids.forEach(function (v) {
+    var box = v.parentElement;
+    var done = function () { box.classList.add('loaded'); };
+    if (v.readyState >= 2) done();
+    v.addEventListener('loadeddata', done);
+  });
+  document.querySelectorAll('.card-media img').forEach(function (img) {
+    var done = function () { img.parentElement.classList.add('loaded'); };
+    if (img.complete) done(); else { img.addEventListener('load', done); img.addEventListener('error', done); }
+  });
   if ('IntersectionObserver' in window) {
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
         var v = en.target;
         if (en.isIntersecting) {
-          if (!v.src) { v.src = v.dataset.src; v.preload = 'metadata'; }
           if (!reduce) { var p = v.play(); if (p && p.catch) p.catch(function () {}); }
         } else if (!v.paused) {
           v.pause();
         }
       });
-    }, { rootMargin: '200px 0px' });
+    }, { rootMargin: '300px 300px' });
     vids.forEach(function (v) { io.observe(v); });
-  } else {
-    vids.forEach(function (v) { v.src = v.dataset.src; });
   }
-
 
   // Entrance on scroll: only elements below the first screen, so the page is complete without JS
   if (!reduce && 'IntersectionObserver' in window) {
