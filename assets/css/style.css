@@ -389,23 +389,54 @@ ul, ol { padding: 0; list-style: none; }
   .lightbox button.lb-prev, .lightbox button.lb-next { display: none; }
 }
 
-/* Signature logo is white on black: blend the black away so only the white strokes remain */
-.tab-logo img, .sign, .footer-sign { mix-blend-mode: screen; }
-.tab { isolation: auto; }
-
 /* process icons */
 .proc-icon { width: 40px; height: 40px; color: #fff; }
 .step { display: inline-flex; align-items: center; gap: 10px; }
 .step-icon { color: var(--text-2); flex: none; }
 .step-sep { width: 1px; height: 16px; background: var(--line-strong); }
 
-/* hero: phone collage, keep the phones in frame */
-.hero-bg { object-position: 70% center; }
-@media (max-width: 760px) { .hero-bg { object-position: 62% center; } }
+/* ---------- signature logo (SVG, black removed by filter) ---------- */
+.logo-svg { display: block; height: 24px; width: auto; aspect-ratio: 407 / 143; }
+.sign { display: block; width: 150px; height: auto; aspect-ratio: 407 / 143; }
+.footer-sign { display: block; width: 180px; height: auto; aspect-ratio: 407 / 143; margin-top: 72px; }
+
+/* ---------- hero: tilted 3D phone wall ---------- */
+.hero { background: radial-gradient(120% 90% at 75% 30%, #0d1830 0%, #060912 55%, var(--bg) 100%); }
+.hero-stage { position: absolute; inset: 0; overflow: hidden; perspective: 1500px; }
+.hero-tilt {
+  position: absolute; top: -14%; bottom: -14%; left: 14%; right: -16%;
+  transform-style: preserve-3d; transform-origin: 40% 50%;
+  transform: rotateX(calc(18deg + var(--ry, 0deg))) rotateY(calc(-16deg + var(--rx, 0deg))) rotateZ(3deg);
+  transition: transform .6s cubic-bezier(.2,.7,.1,1);
+  animation: tiltIn 1.6s cubic-bezier(.2,.7,.1,1) both;
+}
+.hero-tilt::after { /* glass sheen across the wall */
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(115deg, rgba(255,255,255,0) 35%, rgba(255,255,255,.10) 48%, rgba(255,255,255,0) 60%);
+  background-size: 250% 100%; animation: sheen 9s ease-in-out 1.2s infinite;
+}
+.hero .hero-bg {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 60% center;
+  filter: saturate(1.45) contrast(1.12) brightness(1.25);
+  animation: drift 18s ease-in-out infinite alternate; opacity: 1;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 22%, #000 100%);
+          mask-image: linear-gradient(90deg, transparent 0%, #000 22%, #000 100%);
+}
+.hero-glow { position: absolute; inset: 0; pointer-events: none; mix-blend-mode: screen;
+  background:
+    radial-gradient(30% 40% at 62% 28%, rgba(64,120,255,.38), transparent 70%),
+    radial-gradient(26% 34% at 88% 70%, rgba(170,80,255,.30), transparent 70%),
+    radial-gradient(24% 30% at 72% 92%, rgba(30,200,150,.22), transparent 70%);
+}
 .hero::before { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
-  background: linear-gradient(90deg, rgba(4,4,4,.92) 0%, rgba(4,4,4,.7) 30%, rgba(4,4,4,.15) 62%, rgba(4,4,4,0) 80%); }
-.hero::after { z-index: 1; }
+  background: radial-gradient(70% 75% at 0% 85%, rgba(4,4,4,.88) 0%, rgba(4,4,4,.55) 45%, rgba(4,4,4,0) 75%); }
+.hero::after { z-index: 1; background: linear-gradient(180deg, rgba(4,4,4,0) 72%, var(--bg) 100%); }
 .hero-inner { z-index: 2; }
+@keyframes tiltIn { from { opacity: 0; transform: rotateX(34deg) rotateY(-26deg) rotateZ(6deg) translateZ(-200px); } }
+@keyframes drift { from { transform: translate3d(0, 2%, 0) scale(1.04); } to { transform: translate3d(-2%, -3%, 0) scale(1.08); } }
+@keyframes sheen { 0%, 100% { background-position: 120% 0; } 50% { background-position: -20% 0; } }
 @media (max-width: 760px) {
-  .hero::before { background: linear-gradient(180deg, rgba(4,4,4,.25) 0%, rgba(4,4,4,.55) 45%, rgba(4,4,4,.92) 75%); }
+  .hero-tilt { left: -30%; right: -40%; top: -10%; bottom: 20%; transform: rotateX(16deg) rotateY(-10deg) rotateZ(3deg); }
+  .hero .hero-bg { -webkit-mask-image: none; mask-image: none; object-position: 62% center; }
+  .hero::before { background: linear-gradient(180deg, rgba(4,4,4,0) 30%, rgba(4,4,4,.7) 58%, rgba(4,4,4,.95) 78%); }
 }

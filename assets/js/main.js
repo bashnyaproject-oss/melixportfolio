@@ -168,3 +168,17 @@
     if (Math.abs(dx) > 60) show(idx + (dx < 0 ? 1 : -1));
   });
 })();
+
+// Hero: gentle 3D parallax on the phone wall
+(function () {
+  var hero = document.querySelector('.hero'), tilt = document.querySelector('.hero-tilt');
+  if (!hero || !tilt || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (!window.matchMedia('(hover: hover)').matches) return;
+  hero.addEventListener('pointermove', function (ev) {
+    var r = hero.getBoundingClientRect();
+    var x = (ev.clientX - r.left) / r.width - 0.5, y = (ev.clientY - r.top) / r.height - 0.5;
+    tilt.style.setProperty('--rx', (x * 8).toFixed(2) + 'deg');
+    tilt.style.setProperty('--ry', (-y * 6).toFixed(2) + 'deg');
+  });
+  hero.addEventListener('pointerleave', function () { tilt.style.setProperty('--rx', '0deg'); tilt.style.setProperty('--ry', '0deg'); });
+})();
