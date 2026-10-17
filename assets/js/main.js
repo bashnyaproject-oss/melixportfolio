@@ -112,3 +112,59 @@
     img.addEventListener('error', mark);
   });
 })();
+
+// Comic reader: page counter + full-size viewer
+(function () {
+  var pages = Array.prototype.slice.call(document.querySelectorAll('.comic-page'));
+  if (!pages.length) return;
+  var prog = document.querySelector('.comic-progress');
+  var cur = prog && prog.querySelector('[data-cur]');
+  var section = document.querySelector('.comic-pages');
+  var update = function () {
+    var mid = window.innerHeight * 0.5, n = 0;
+    for (var i = 0; i < pages.length; i++) { if (pages[i].getBoundingClientRect().top < mid) n = i + 1; }
+    var r = section.getBoundingClientRect();
+    var inView = r.top < window.innerHeight * 0.6 && r.bottom > window.innerHeight * 0.4;
+    if (prog) prog.classList.toggle('on', inView);
+    if (cur && n) cur.textContent = n;
+  };
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+
+  var lb = document.querySelector('.lightbox');
+  if (!lb) return;
+  var img = lb.querySelector('img'), count = lb.querySelector('.lb-count'), scroller = lb.querySelector('.lb-scroll');
+  var idx = 1, lastFocus = null;
+  var show = function (n) {
+    idx = Math.max(1, Math.min(pages.length, n));
+    var src = pages[idx - 1].querySelector('img');
+    img.src = src.currentSrc || src.src; img.alt = src.alt;
+    count.textContent = idx + ' / ' + pages.length;
+    scroller.scrollTop = 0;
+  };
+  var open = function (n) { lastFocus = document.activeElement; show(n); lb.hidden = false; document.body.style.overflow = 'hidden'; lb.querySelector('.lb-close').focus(); };
+  var close = function () {
+    lb.hidden = true; document.body.style.overflow = '';
+    var target = pages[idx - 1]; if (target) target.scrollIntoView({ block: 'start' });
+    if (lastFocus) lastFocus.focus();
+  };
+  document.querySelectorAll('.comic-open').forEach(function (b) {
+    b.addEventListener('click', function () { open(parseInt(b.getAttribute('data-page'), 10)); });
+  });
+  lb.querySelector('.lb-close').addEventListener('click', close);
+  lb.querySelector('.lb-prev').addEventListener('click', function () { show(idx - 1); });
+  lb.querySelector('.lb-next').addEventListener('click', function () { show(idx + 1); });
+  lb.addEventListener('click', function (ev) { if (ev.target === lb) close(); });
+  document.addEventListener('keydown', function (ev) {
+    if (lb.hidden) return;
+    if (ev.key === 'Escape') close();
+    else if (ev.key === 'ArrowRight') show(idx + 1);
+    else if (ev.key === 'ArrowLeft') show(idx - 1);
+  });
+  var x0 = null;
+  lb.addEventListener('touchstart', function (ev) { x0 = ev.touches[0].clientX; }, { passive: true });
+  lb.addEventListener('touchend', function (ev) {
+    if (x0 === null) return; var dx = ev.changedTouches[0].clientX - x0; x0 = null;
+    if (Math.abs(dx) > 60) show(idx + (dx < 0 ? 1 : -1));
+  });
+})();
