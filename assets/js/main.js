@@ -86,15 +86,42 @@
     nums.forEach(function (el) { co.observe(el); });
   }
 
-  // Expertise slider buttons
-  var slider = document.querySelector('[data-slider]');
-  if (slider) {
-    var step = function () { var c = slider.querySelector('.exp'); return c ? c.getBoundingClientRect().width + 20 : 400; };
-    var prev = document.querySelector('[data-prev]');
-    var next = document.querySelector('[data-next]');
-    if (prev) prev.addEventListener('click', function () { slider.scrollBy({ left: -step(), behavior: 'smooth' }); });
-    if (next) next.addEventListener('click', function () { slider.scrollBy({ left: step(), behavior: 'smooth' }); });
-  }
+  // Horizontal rows: arrow buttons, mouse drag, button state
+  document.querySelectorAll('[data-slider]').forEach(function (row) {
+    var ctrl = row.nextElementSibling && row.nextElementSibling.classList.contains('slider-ctrl') ? row.nextElementSibling : null;
+    var prev = ctrl && ctrl.querySelector('[data-prev]'), next = ctrl && ctrl.querySelector('[data-next]');
+    var step = function () { var c = row.firstElementChild; return c ? (c.getBoundingClientRect().width + 20) * Math.max(1, Math.floor(row.clientWidth / (c.getBoundingClientRect().width + 20)) - 1 || 1) : 400; };
+    var sync = function () {
+      if (prev) prev.disabled = row.scrollLeft <= 2;
+      if (next) next.disabled = row.scrollLeft + row.clientWidth >= row.scrollWidth - 2;
+      row.classList.toggle('at-start', row.scrollLeft <= 2);
+      row.classList.toggle('at-end', row.scrollLeft + row.clientWidth >= row.scrollWidth - 2);
+    };
+    if (prev) prev.addEventListener('click', function () { row.scrollBy({ left: -step(), behavior: 'smooth' }); });
+    if (next) next.addEventListener('click', function () { row.scrollBy({ left: step(), behavior: 'smooth' }); });
+    row.addEventListener('scroll', sync, { passive: true });
+    window.addEventListener('resize', sync);
+    sync();
+    // drag with the mouse (touch already scrolls natively)
+    var down = false, moved = false, x0 = 0, s0 = 0;
+    row.addEventListener('pointerdown', function (ev) {
+      if (ev.pointerType !== 'mouse' || ev.button !== 0) return;
+      down = true; moved = false; x0 = ev.clientX; s0 = row.scrollLeft;
+    });
+    window.addEventListener('pointermove', function (ev) {
+      if (!down) return;
+      var dx = ev.clientX - x0;
+      if (!moved && Math.abs(dx) > 5) { moved = true; row.classList.add('dragging'); }
+      if (moved) row.scrollLeft = s0 - dx;
+    });
+    window.addEventListener('pointerup', function () {
+      if (!down) return; down = false;
+      setTimeout(function () { row.classList.remove('dragging'); }, 0);
+    });
+    // a drag must not open the card under the cursor
+    row.addEventListener('click', function (ev) { if (moved) { ev.preventDefault(); ev.stopPropagation(); moved = false; } }, true);
+    row.addEventListener('dragstart', function (ev) { ev.preventDefault(); });
+  });
 
   // Case pages: draft mode shows empty slots as hints (localhost or ?draft)
   var draft = /^(localhost|127\.0\.0\.1)$/.test(location.hostname) || new URLSearchParams(location.search).has('draft');

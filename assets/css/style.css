@@ -451,3 +451,16 @@ ul, ol { padding: 0; list-style: none; }
   .hero::before { background: linear-gradient(180deg, rgba(4,4,4,.05) 25%, rgba(4,4,4,.7) 55%, rgba(4,4,4,.96) 76%); }
 }
 @media (prefers-reduced-motion: reduce) { .wall-track { animation: none; } }
+
+/* horizontal rows: visible thin scrollbar, drag cursor, edge fades */
+.app-row, .exp-row { scrollbar-width: thin; scrollbar-color: rgba(255,255,255,.22) transparent; padding-bottom: 14px; cursor: grab; scroll-snap-type: x proximity; }
+.app-row::-webkit-scrollbar, .exp-row::-webkit-scrollbar { display: block; height: 6px; }
+.app-row::-webkit-scrollbar-thumb, .exp-row::-webkit-scrollbar-thumb { background: rgba(255,255,255,.22); border-radius: 99px; }
+.app-row::-webkit-scrollbar-track, .exp-row::-webkit-scrollbar-track { background: rgba(255,255,255,.05); border-radius: 99px; }
+.app-row.dragging, .exp-row.dragging { cursor: grabbing; scroll-snap-type: none; user-select: none; }
+.app-row.dragging *, .exp-row.dragging * { pointer-events: none; }
+.app-row { margin-bottom: 0; -webkit-mask-image: linear-gradient(90deg, #000 85%, transparent); mask-image: linear-gradient(90deg, #000 85%, transparent); }
+.app-row.at-end { -webkit-mask-image: none; mask-image: none; }
+.slider-ctrl-apps { margin: 16px 0 56px; }
+.slider-ctrl button:disabled { opacity: .3; cursor: default; }
+.slider-ctrl button:disabled:hover { background: transparent; }
