@@ -388,3 +388,7 @@ ul, ol { padding: 0; list-style: none; }
   .comic-open { border-radius: 8px; }
   .lightbox button.lb-prev, .lightbox button.lb-next { display: none; }
 }
+
+/* Signature logo is white on black: blend the black away so only the white strokes remain */
+.tab-logo img, .sign, .footer-sign { mix-blend-mode: screen; }
+.tab { isolation: auto; }
