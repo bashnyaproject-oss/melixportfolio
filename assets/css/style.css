@@ -392,3 +392,9 @@ ul, ol { padding: 0; list-style: none; }
 /* Signature logo is white on black: blend the black away so only the white strokes remain */
 .tab-logo img, .sign, .footer-sign { mix-blend-mode: screen; }
 .tab { isolation: auto; }
+
+/* process icons */
+.proc-icon { width: 40px; height: 40px; color: #fff; }
+.step { display: inline-flex; align-items: center; gap: 10px; }
+.step-icon { color: var(--text-2); flex: none; }
+.step-sep { width: 1px; height: 16px; background: var(--line-strong); }
