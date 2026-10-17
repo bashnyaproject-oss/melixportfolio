@@ -398,3 +398,14 @@ ul, ol { padding: 0; list-style: none; }
 .step { display: inline-flex; align-items: center; gap: 10px; }
 .step-icon { color: var(--text-2); flex: none; }
 .step-sep { width: 1px; height: 16px; background: var(--line-strong); }
+
+/* hero: phone collage, keep the phones in frame */
+.hero-bg { object-position: 70% center; }
+@media (max-width: 760px) { .hero-bg { object-position: 62% center; } }
+.hero::before { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: linear-gradient(90deg, rgba(4,4,4,.92) 0%, rgba(4,4,4,.7) 30%, rgba(4,4,4,.15) 62%, rgba(4,4,4,0) 80%); }
+.hero::after { z-index: 1; }
+.hero-inner { z-index: 2; }
+@media (max-width: 760px) {
+  .hero::before { background: linear-gradient(180deg, rgba(4,4,4,.25) 0%, rgba(4,4,4,.55) 45%, rgba(4,4,4,.92) 75%); }
+}
