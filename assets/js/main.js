@@ -171,7 +171,7 @@
 
 // Hero: gentle 3D parallax on the phone wall
 (function () {
-  var hero = document.querySelector('.hero'), tilt = document.querySelector('.hero-tilt');
+  var hero = document.querySelector('.hero'), tilt = document.querySelector('.hero-wall');
   if (!hero || !tilt || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   if (!window.matchMedia('(hover: hover)').matches) return;
   hero.addEventListener('pointermove', function (ev) {
