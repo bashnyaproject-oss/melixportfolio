@@ -492,3 +492,21 @@ ul, ol { padding: 0; list-style: none; }
 /* touch screens have no hover: keep the comic badge visible */
 @media (hover: none) { .card-badge.is-comic { opacity: 1; transform: none; } }
 .card-feature .card-media-wrap { height: 100%; }
+
+/* ---------- comic: the hard parts ---------- */
+.hard-parts { grid-column: 2; margin-top: 64px; }
+.hard-parts .mid { margin: 0 0 24px; }
+.hard-parts ol { display: grid; gap: 12px; }
+.hard { position: relative; padding: 24px 24px 24px 72px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+.hard-n { position: absolute; left: 24px; top: 25px; font-size: 13px; color: #6d8fff; font-variant-numeric: tabular-nums; }
+.hard h3 { font-size: 19px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 14px; }
+.hard p { display: grid; grid-template-columns: 92px minmax(0, 1fr); gap: 12px; font-size: 15px; line-height: 1.55; color: var(--text-2); }
+.hard p + p { margin-top: 10px; }
+.hard p span { font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--text-3); padding-top: 3px; }
+.hard .hard-m { color: #fff; }
+.hard .hard-m span { color: #6d8fff; }
+@media (max-width: 640px) {
+  .hard { padding: 20px; }
+  .hard-n { position: static; display: block; margin-bottom: 8px; }
+  .hard p { grid-template-columns: 1fr; gap: 4px; }
+}
