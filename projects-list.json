@@ -120,6 +120,11 @@
   "kind": "app"
  },
  {
+  "slug": "ubest-app",
+  "title": "uBest App",
+  "kind": "app"
+ },
+ {
   "slug": "3commas-wallet",
   "title": "3Commas Wallet",
   "kind": "app"
