@@ -510,3 +510,26 @@ ul, ol { padding: 0; list-style: none; }
   .hard-n { position: static; display: block; margin-bottom: 8px; }
   .hard p { grid-template-columns: 1fr; gap: 4px; }
 }
+
+/* ---------- comic: the problem and my role ---------- */
+.role-sec { grid-column: 2; margin-top: 64px; display: grid; gap: 56px; }
+.role-sec .mid { margin: 0 0 24px; }
+.pr-list { display: grid; gap: 12px; }
+.pr-list li { padding: 20px 24px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); font-size: 18px; line-height: 1.5; color: var(--text-2); }
+.pr-list b, .rl-key b { color: #fff; font-weight: 600; }
+.rl-title { font-size: 15px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: #6d8fff; }
+.rl-sub { margin-top: 6px; color: var(--text-3); font-size: 15px; }
+.rl-list { margin-top: 24px; border-top: 1px solid var(--line); }
+.rl-list li { display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 8px; padding: 18px 0; border-bottom: 1px solid var(--line); }
+.rl-n { font-size: 28px; font-weight: 600; line-height: 1; color: #6d8fff; font-variant-numeric: tabular-nums; }
+.rl-list h3 { font-size: 19px; font-weight: 600; letter-spacing: -0.02em; }
+.rl-list p { margin-top: 4px; color: var(--text-2); font-size: 15px; line-height: 1.5; }
+.rl-key { margin-top: 28px; padding: 20px 24px; border: 1px solid rgba(109, 143, 255, .45); border-radius: var(--radius); background: rgba(61, 107, 255, .08); font-size: 18px; line-height: 1.45; color: var(--text-2); }
+.rl-key span { display: block; margin-bottom: 6px; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: #6d8fff; }
+.rl-quote { font-size: 22px; font-weight: 500; letter-spacing: -0.01em; }
+@media (max-width: 640px) {
+  .role-sec { gap: 40px; }
+  .pr-list li, .rl-key { padding: 16px 18px; font-size: 16px; }
+  .rl-list li { grid-template-columns: 40px minmax(0, 1fr); }
+  .rl-n { font-size: 22px; }
+}
