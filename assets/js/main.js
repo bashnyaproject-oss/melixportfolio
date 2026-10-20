@@ -209,3 +209,15 @@
   });
   hero.addEventListener('pointerleave', function () { tilt.style.setProperty('--rx', '0deg'); tilt.style.setProperty('--ry', '0deg'); });
 })();
+
+// Brand identity: open the hovered / focused panel
+(function () {
+  document.querySelectorAll('.brand-acc').forEach(function (acc) {
+    var items = Array.prototype.slice.call(acc.querySelectorAll('[data-bp]'));
+    var open = function (it) { items.forEach(function (x) { x.classList.toggle('is-open', x === it); }); };
+    items.forEach(function (it) {
+      it.addEventListener('mouseenter', function () { open(it); });
+      it.addEventListener('focus', function () { open(it); });
+    });
+  });
+})();
