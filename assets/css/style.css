@@ -559,3 +559,4 @@ ul, ol { padding: 0; list-style: none; }
   .bp .bp-closed { display: none; }
 }
 @media (prefers-reduced-motion: reduce) { .bp, .bp-media, .bp-open, .bp-media img { transition: none; } .bp.is-open .bp-glitch { animation: none; } }
+.app-row[data-autoscroll] { scroll-snap-type: none; }

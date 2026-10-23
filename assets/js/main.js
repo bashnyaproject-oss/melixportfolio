@@ -221,3 +221,42 @@
     });
   });
 })();
+
+// Applications row: slow auto-scroll; pauses while the visitor hovers, touches, focuses or drags
+(function () {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  document.querySelectorAll('[data-autoscroll]').forEach(function (row) {
+    var paused = false, visible = false, resumeAt = 0, pos = row.scrollLeft, last = 0, waitUntil = 0, SPEED = 32; // px per second
+    var hold = function () { paused = true; row.classList.remove('autoscrolling'); };
+    var release = function (ms) { paused = false; resumeAt = performance.now() + (ms || 2500); };
+    row.addEventListener('pointerenter', hold);
+    row.addEventListener('pointerleave', function () { release(1200); });
+    row.addEventListener('touchstart', hold, { passive: true });
+    row.addEventListener('touchend', function () { release(4000); }, { passive: true });
+    row.addEventListener('focusin', hold);
+    row.addEventListener('focusout', function () { release(2500); });
+    var ctrl = row.nextElementSibling;
+    if (ctrl && ctrl.classList.contains('slider-ctrl')) ctrl.addEventListener('click', function () { release(6000); });
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (en) { visible = en[0].isIntersecting; }, { threshold: 0.25 }).observe(row);
+    } else visible = true;
+    var tick = function (t) {
+      var dt = last ? Math.min(t - last, 100) : 0; last = t;
+      var max = row.scrollWidth - row.clientWidth;
+      if (!paused && visible && t >= resumeAt && t >= waitUntil && max > 0 && !document.hidden) {
+        if (!row.classList.contains('autoscrolling')) { row.classList.add('autoscrolling'); pos = row.scrollLeft; }
+        if (Math.abs(row.scrollLeft - pos) > 2) pos = row.scrollLeft; // visitor moved it: continue from there
+        pos += SPEED * dt / 1000;
+        if (pos >= max) {
+          pos = max; row.scrollLeft = max;
+          row.classList.remove('autoscrolling');
+          waitUntil = t + 1800;
+          setTimeout(function () { row.scrollTo({ left: 0, behavior: 'smooth' }); pos = 0; }, 1600);
+          waitUntil = t + 3200;
+        } else row.scrollLeft = pos;
+      }
+      requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  });
+})();
