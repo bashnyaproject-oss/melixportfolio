@@ -560,3 +560,7 @@ ul, ol { padding: 0; list-style: none; }
 }
 @media (prefers-reduced-motion: reduce) { .bp, .bp-media, .bp-open, .bp-media img { transition: none; } .bp.is-open .bp-glitch { animation: none; } }
 .app-row[data-autoscroll] { scroll-snap-type: none; }
+.case-links { display: flex; flex-wrap: wrap; gap: 10px; }
+.case-links:empty { display: none; }
+.btn-figma { gap: 10px; }
+.fig-ico { width: 12px; height: 18px; flex: none; }
